@@ -1,0 +1,129 @@
+﻿<Window x:Class="GlobalAeroTechnicalTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Airports Test Exercise" Height="850" Width="1500">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- filtered airports -->
+        <GroupBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="10" Header="Filtered Airports">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- filtering on airports name -->
+                <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Margin="10">
+                    <Label Content="Search on Name:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+                </StackPanel>
+                
+                <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <DataGrid Grid.Row="0" ItemsSource="{Binding Airports}" 
+                      AutoGenerateColumns="False" Margin="10" 
+                      SelectedItem="{Binding FilteredAirport}"
+                      AlternatingRowBackground="Lavender">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                          Command="{Binding DataContext.ToggleSelectionCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                          CommandParameter="{Binding}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Iata" Binding="{Binding iata}" />
+                            <DataGridTextColumn Header="Icao" Binding="{Binding icao}" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding name}" />
+                            <DataGridTextColumn Header="City" Binding="{Binding city}" />
+                            <DataGridTextColumn Header="Country" Binding="{Binding country}" />
+                            <DataGridTextColumn Header="Lat" Binding="{Binding latitude}" />
+                            <DataGridTextColumn Header="Long" Binding="{Binding longitude}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+
+                    <GroupBox Grid.Row="1" Margin="10" Header="Details" Width="Auto">
+                        <StackPanel Orientation="Vertical" Margin="10">
+                            <TextBlock Text="{Binding FilteredAirport.iata, StringFormat='Iata: {0}'}" />
+                            <TextBlock Text="{Binding FilteredAirport.icao, StringFormat='Icao: {0}'}" />
+                            <TextBlock Text="{Binding FilteredAirport.name, StringFormat='Name: {0}'}" />
+                            <TextBlock Text="{Binding FilteredAirport.city, StringFormat='City: {0}'}" />
+                            <TextBlock Text="{Binding FilteredAirport.country, StringFormat='Country: {0}'}" />
+                            <TextBlock Text="{Binding FilteredAirport.latitude, StringFormat='Latitude: {0}'}" />
+                            <TextBlock Text="{Binding FilteredAirport.longitude, StringFormat='Longitude: {0}'}" />
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+            </Grid>
+        </GroupBox>
+
+        <GridSplitter Grid.Column="1" Grid.Row="1" Width="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+        <!-- selected airports -->
+        <GroupBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Margin="10" Header="Selected Airports">        
+            <Grid Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- grid for selected airport -->
+                <DataGrid Grid.Row="0" ItemsSource="{Binding SelectedAirports}" 
+                      AutoGenerateColumns="False" Margin="10" 
+                      SelectedItem="{Binding SelectedAirport}"
+                      AlternatingRowBackground="Lavender">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Iata" Binding="{Binding iata}" />
+                        <DataGridTextColumn Header="Icao" Binding="{Binding icao}" />
+                        <DataGridTextColumn Header="Name" Binding="{Binding name}" />
+                        <DataGridTextColumn Header="City" Binding="{Binding city}" />
+                        <DataGridTextColumn Header="Country" Binding="{Binding country}" />
+                        <DataGridTextColumn Header="Lat" Binding="{Binding latitude}" />
+                        <DataGridTextColumn Header="Long" Binding="{Binding longitude}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+
+                <!-- details for selected airport -->
+                <GroupBox Grid.Row="1" Margin="10" Header="Details" Width="Auto">
+                    <StackPanel Orientation="Vertical" Margin="10">
+                        <TextBlock Text="{Binding SelectedAirport.iata, StringFormat='Iata: {0}'}" />
+                        <TextBlock Text="{Binding SelectedAirport.icao, StringFormat='Icao: {0}'}" />
+                        <TextBlock Text="{Binding SelectedAirport.name, StringFormat='Name: {0}'}" />
+                        <TextBlock Text="{Binding SelectedAirport.city, StringFormat='City: {0}'}" />
+                        <TextBlock Text="{Binding SelectedAirport.country, StringFormat='Country: {0}'}" />
+                        <TextBlock Text="{Binding SelectedAirport.latitude, StringFormat='Latitude: {0}'}" />
+                        <TextBlock Text="{Binding SelectedAirport.longitude, StringFormat='Longitude: {0}'}" />
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+    </Grid>        
+    
+</Window>
